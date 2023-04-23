@@ -1,6 +1,3 @@
-# FitnessGUI
-Python based application for monitoring fitness
-
 # kun avaa uuden terminalin kirjoita "intel"
 # sitten suorita "source venv/bin/activate" jotta saat venvin
 # ja käytä pelkkää "python"
