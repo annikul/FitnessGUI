@@ -249,6 +249,9 @@
     <property name="displayFormat">
      <string>yyyy-MM-dd</string>
     </property>
+    <property name="calendarPopup">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QComboBox" name="genderComboBox">
     <property name="geometry">
@@ -281,6 +284,9 @@
       <width>110</width>
       <height>22</height>
      </rect>
+    </property>
+    <property name="calendarPopup">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QDoubleSpinBox" name="heightSpinBox">

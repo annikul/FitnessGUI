@@ -27,6 +27,7 @@ class MainWindow(QtWidgets.QMainWindow):   # Luokka alkaa aina isolla(MainWindow
         self.birthDay = self.birthDateEdit
         self.genderCB = self.genderComboBox
         self.weighingDate = self.weighingDateEdit
+        self.weighingDate.setDate(QtCore.QDate.currentDate())
         self.heightSB = self.heightSpinBox
         self.weightSB = self.weightSpinBox
         self.neckSB = self.neckSpinBox
@@ -45,9 +46,9 @@ class MainWindow(QtWidgets.QMainWindow):   # Luokka alkaa aina isolla(MainWindow
     def calculateAll(self):   # EI anneta argumentteja
         height = self.heightSB.value() # Spinbox value as an integer
         weight = self.weightSB.value()
-        age = 100
+        age = 
         gender = self.genderCB.currentText()
-        dateOFWeighing = str(self.weighingDate.date().getDate())
+        dateOFWeighing = str(self.weighingDate.date().toString(format=QtCore.Qt.ISODate))
 
         # create an athlete from Kuntoilija class
         #athlete = kuntoilija.Kuntoilija()
