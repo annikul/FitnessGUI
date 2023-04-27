@@ -9,6 +9,7 @@ from PyQt6 import QtCore  # Core functionality of Qt # Kirjastosta PyQt6 otetaan
 from PyQt6 import QtWidgets # UI elements functionality
 from PyQt6.uic.load_ui import loadUi
 import kuntoilija
+import timetools
 
 # Class for the main window
 class MainWindow(QtWidgets.QMainWindow):   # Luokka alkaa aina isolla(MainWindow) ja koska se perii niin toisiin sulkuihin(QtWidgets.QMainWindow)(tehty ikkuna designilla) jos ei perisi mitään otetaan toiset ()pois
@@ -24,12 +25,14 @@ class MainWindow(QtWidgets.QMainWindow):   # Luokka alkaa aina isolla(MainWindow
 
         # Define UI Controls ie buttons and input fields
         self.nameLE = self.nameLineEdit   # tulee tekstiä
-        self.birthDay = self.birthDateEdit
-        self.genderCB = self.genderComboBox
+        self.birthDay = self.birthDateEdit  # ensimmäinen self.keksitty
+        self.genderCB = self.genderComboBox     # Toinen self.Qtdesigneriin laittamasi
         self.weighingDate = self.weighingDateEdit
-        self.weighingDate.setDate(QtCore.QDate.currentDate())
-        self.heightSB = self.heightSpinBox
-        self.weightSB = self.weightSpinBox
+
+        # Set the weighing date to the current date
+        self.weighingDate.setDate(QtCore.QDate.currentDate()) # Tämä on kuluva päivä
+        self.heightSB = self.heightSpinBox  # ensimmäinen self.keksitty
+        self.weightSB = self.weightSpinBox  # Toinen self.Qtdesigneriin laittamasi
         self.neckSB = self.neckSpinBox
         self.waistSB = self.waistSpinBox
         self.hipSB = self.hipSpinBox
@@ -46,10 +49,24 @@ class MainWindow(QtWidgets.QMainWindow):   # Luokka alkaa aina isolla(MainWindow
     def calculateAll(self):   # EI anneta argumentteja
         height = self.heightSB.value() # Spinbox value as an integer
         weight = self.weightSB.value()
-        age = 
-        gender = self.genderCB.currentText()
-        dateOFWeighing = str(self.weighingDate.date().toString(format=QtCore.Qt.ISODate))
 
+        # Convert birthday to ISO string using QtCore's methods
+        birthday = self.birthDateE.date().toString(format=QtCore.Qt.ISODate)
+        
+        # Set Gender Value according to ComboBox value
+        gendertext = self.genderCB.currentText()
+        if gendertext == 'Mies':
+            gender = 1
+
+        else:
+            gender = 0
+
+        # Convert Weighing day to ISO string
+        dateOFWeighing = str(self.weighingDateE.date().toString(format=QtCore.Qt.ISODate))
+        
+        # Calculate time difference using our home made tools
+        age = timetools.datediff2(birthday, dateOFWeighing, 'year') # Laskee iän. Syntymä aika - punnituspäivä
+        
         # create an athlete from Kuntoilija class
         #athlete = kuntoilija.Kuntoilija()
         #bmi = athlete.bmi
