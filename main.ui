@@ -285,6 +285,9 @@
       <height>22</height>
      </rect>
     </property>
+    <property name="displayFormat">
+     <string>yyyy.MM.dd</string>
+    </property>
     <property name="calendarPopup">
      <bool>true</bool>
     </property>
@@ -298,8 +301,14 @@
       <height>22</height>
      </rect>
     </property>
+    <property name="decimals">
+     <number>2</number>
+    </property>
     <property name="maximum">
      <double>230.990000000000009</double>
+    </property>
+    <property name="value">
+     <double>100.000000000000000</double>
     </property>
    </widget>
    <widget class="QDoubleSpinBox" name="weightSpinBox">
@@ -314,6 +323,9 @@
     <property name="maximum">
      <double>200.990000000000009</double>
     </property>
+    <property name="value">
+     <double>50.000000000000000</double>
+    </property>
    </widget>
    <widget class="QSpinBox" name="neckSpinBox">
     <property name="geometry">
@@ -323,6 +335,12 @@
       <width>61</width>
       <height>22</height>
      </rect>
+    </property>
+    <property name="value">
+     <number>30</number>
+    </property>
+    <property name="displayIntegerBase">
+     <number>10</number>
     </property>
    </widget>
    <widget class="QSpinBox" name="waistSpinBox">
@@ -337,6 +355,9 @@
     <property name="maximum">
      <number>300</number>
     </property>
+    <property name="value">
+     <number>40</number>
+    </property>
    </widget>
    <widget class="QSpinBox" name="hipSpinBox">
     <property name="geometry">
@@ -349,6 +370,9 @@
     </property>
     <property name="maximum">
      <number>300</number>
+    </property>
+    <property name="value">
+     <number>60</number>
     </property>
    </widget>
    <widget class="QPushButton" name="calculatePushButton">

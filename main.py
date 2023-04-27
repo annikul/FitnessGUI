@@ -4,12 +4,13 @@
 # Käytetään C-tyyppistä muuttujen nimeämistä metodin nimi on calculate ja All isolla ei tule aliviivoja
 
 # LIBRARIES AND MODULES
-import sys
+import sys # For system arguments if needed to run the app
 from PyQt6 import QtCore  # Core functionality of Qt # Kirjastosta PyQt6 otetaan komponentti QtCore
 from PyQt6 import QtWidgets # UI elements functionality
-from PyQt6.uic.load_ui import loadUi
-import kuntoilija
-import timetools
+from PyQt6.uic.load_ui import loadUi # Reads the UI file 
+import kuntoilija # Home brew module for athlete
+import timetools # DIY module for date and time calculations
+# TODO: Import some library able to plot trends and make it as widgets in the UI
 
 # Class for the main window
 class MainWindow(QtWidgets.QMainWindow):   # Luokka alkaa aina isolla(MainWindow) ja koska se perii niin toisiin sulkuihin(QtWidgets.QMainWindow)(tehty ikkuna designilla) jos ei perisi mitään otetaan toiset ()pois
@@ -37,9 +38,11 @@ class MainWindow(QtWidgets.QMainWindow):   # Luokka alkaa aina isolla(MainWindow
         self.waistSB = self.waistSpinBox
         self.hipSB = self.hipSpinBox
 
+        # TODO: Disable Calculate button until values have been edited
         self.calculatePB = self.calculatePushButton  # Olion ominaisuus calculatePB ja oikeasti nappula on calculatePushButton
         self.calculatePB.clicked.connect(self.calculateAll) # self.calculatePB.clicked.connect käynnistää oliosta jonka nimeä ei vielä tiedetä self.calculateAll (calculateAll = funktio)
 
+        # TODO: Disable Save button until new value are calculated
         self.savePB = self.savePushButton
         self.savePB.clicked.connect(self.saveData)
 
@@ -47,6 +50,7 @@ class MainWindow(QtWidgets.QMainWindow):   # Luokka alkaa aina isolla(MainWindow
 
     # Calculates BMI, finnish and US fat percentages and updates corresponding labels
     def calculateAll(self):   # EI anneta argumentteja
+        name = self.nameLE.text()
         height = self.heightSB.value() # Spinbox value as an integer
         weight = self.weightSB.value()
 
@@ -67,12 +71,13 @@ class MainWindow(QtWidgets.QMainWindow):   # Luokka alkaa aina isolla(MainWindow
         # Calculate time difference using our home made tools
         age = timetools.datediff2(birthday, dateOFWeighing, 'year') # Laskee iän. Syntymä aika - punnituspäivä
         
-        # create an athlete from Kuntoilija class
-        #athlete = kuntoilija.Kuntoilija()
-        #bmi = athlete.bmi
+        # Create an athlete from Kuntoilija class
+        athlete = kuntoilija.Kuntoilija(name, height, weight, age, gender, dateOFWeighing)
+        bmi = athlete.bmi
        
-        self.bmiLabel.setText(dateOFWeighing) # Kun nappulaa painetaan tehdään tämä
+        self.bmiLabel.setText(str(bmi)) # Kun nappulaa painetaan tehdään tämä
 
+    # TODO: Make this method to save results to a disk drive
     # Saves data to disk
     def saveData(self):     # metodi joka ei vielä tee mitään
         pass
