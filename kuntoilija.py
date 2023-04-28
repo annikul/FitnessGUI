@@ -31,8 +31,8 @@ class Kuntoilija:
 
     # Metodi rasvaprosentin laskemiseen (yleinen/aikuinen)
     def rasvaprosentti(self): # Tähän voisi laittaa parametreja jos haluaa
-        self.rasvaprosenntti = fitness.aikuisen_rasvaprosentti(self.bmi, self.ika, self.sukupuoli) # Tässä haetaan fitness.py tietoja kun laitat vain fitness. sinulle ehdotetaan tietoja joita sieltä on saatavilla ja kun laitat sulut loppuun se kertoo mitä tarvitset. Koska meillä oli tehty self.bmi,self,ika jne oliot voit käyttää niitä tässä
-        return self.rasvaprosenntti  # Kun kutsutaan kuntoilija oliosta rasvaprosenttia. Tähän ptäisi tulla rasvaprosentti
+        self.rasvaprosentti = fitness.aikuisen_rasvaprosentti(self.bmi, self.ika, self.sukupuoli) # Tässä haetaan fitness.py tietoja kun laitat vain fitness. sinulle ehdotetaan tietoja joita sieltä on saatavilla ja kun laitat sulut loppuun se kertoo mitä tarvitset. Koska meillä oli tehty self.bmi,self,ika jne oliot voit käyttää niitä tässä
+        return self.rasvaprosentti  # Kun kutsutaan kuntoilija oliosta rasvaprosenttia. Tähän ptäisi tulla rasvaprosentti
 
  # Metodit rasvaprosenttien laskemiseen USA:n armeijan metodeilla
     def usa_rasvaprosentti_mies(self, pituus, vyotaron_ymparys, kaulan_ymparys):

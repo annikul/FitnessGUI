@@ -25,37 +25,84 @@ class MainWindow(QtWidgets.QMainWindow):   # Luokka alkaa aina isolla(MainWindow
         self.main = loadUi('main.ui', self)  # Tämän takia python ei tiedä objektien nimiä joten ei tule valmiit tekstejä eikä värit kerro oletko kirjoittanut väärin. 
 
         # Define UI Controls ie buttons and input fields
-        self.nameLE = self.nameLineEdit   # tulee tekstiä
-        self.birthDay = self.birthDateEdit  # ensimmäinen self.keksitty
+        # self.nameLE = self.nameLineEdit   # tulee tekstiä. Tällä toimii. Alla toinen vaihtoehto
+        self.nameLE = self.findChild(QtWidgets.QLineEdit, 'nameLineEdit') # findChild tekee että osaa ehdottaa joitakin metodeja/ominaisuuksia 
+        self.nameLE.textEdited.connect(self.activateCalculatePB) # Nyt kun nimikenttää muokataan se kutsuu funktiota activateCalculatePB. Alhaalla tallennanappula menee päälle.
+       
+        self.birthDateE = self.birthDateEdit  # ensimmäinen self.keksitty
+        self.birthDateE.dateChanged.connect(self.activateCalculatePB) # Nyt kun syntymäaikaa muokataan se kutsuu funktiota activateCalculatePB. Alhaalla tallennanappula menee päälle.
         self.genderCB = self.genderComboBox     # Toinen self.Qtdesigneriin laittamasi
-        self.weighingDate = self.weighingDateEdit
+        self.genderCB.currentTextChanged.connect(self.activateCalculatePB) # Nyt kun sukupuolta muokataan se kutsuu funktiota activateCalculatePB. Alhaalla tallennanappula menee päälle.
+        self.weighingDateE = self.weighingDateEdit
 
         # Set the weighing date to the current date
-        self.weighingDate.setDate(QtCore.QDate.currentDate()) # Tämä on kuluva päivä
+        self.weighingDateE.setDate(QtCore.QDate.currentDate()) # Tämä on kuluva päivä
         self.heightSB = self.heightSpinBox  # ensimmäinen self.keksitty
+        self.heightSB.valueChanged.connect(self.activateCalculatePB)
         self.weightSB = self.weightSpinBox  # Toinen self.Qtdesigneriin laittamasi
+        self.weightSB.valueChanged.connect(self.activateCalculatePB)
         self.neckSB = self.neckSpinBox
+        self.neckSB.valueChanged.connect(self.activateCalculatePB)
         self.waistSB = self.waistSpinBox
+        self.waistSB.valueChanged.connect(self.activateCalculatePB)
         self.hipSB = self.hipSpinBox
+        self.hipSB.setEnabled(False)
+        self.hipSB.valueChanged.connect(self.activateCalculatePB)
 
         # TODO: Disable Calculate button until values have been edited
-        self.calculatePB = self.calculatePushButton  # Olion ominaisuus calculatePB ja oikeasti nappula on calculatePushButton
+        # self.calculatePB = self.calculatePushButton # Tällä toimii kanssa. Alupuolella vaihtoehto. (Olion ominaisuus calculatePB ja oikeasti nappula on calculatePushButton)
+        self.calculatePB = self.findChild(QtWidgets.QPushButton, 'calculatePushButton') # findChild tekee että osaa ehdottaa joitakin metodeja/ominaisuuksia 
         self.calculatePB.clicked.connect(self.calculateAll) # self.calculatePB.clicked.connect käynnistää oliosta jonka nimeä ei vielä tiedetä self.calculateAll (calculateAll = funktio)
+        self.calculatePB.setEnabled(False)
 
         # TODO: Disable Save button until new value are calculated
-        self.savePB = self.savePushButton
-        self.savePB.clicked.connect(self.saveData)
+        # self.savePB = self.savePushButton # Tällä toimii kanssa. Alupuolella vaihtoehto
+        self.savePB = self.findChild(QtWidgets.QPushButton, 'savePushButton') # findChild tekee että osaa ehdottaa joitakin metodeja/ominaisuuksia
+        self.savePB.clicked.connect(self.saveData) 
+        self.savePB.setEnabled(False) # pisti harmaaksi tallennus nappulan
 
     # Define slots ie methods
+    def activateCalculatePB(self): # Laskenappula aktivoituu vasta kun kaikki tiedot on laitettu!
+        self.calculatePB.setEnabled(True) # Aktivoi laskenappulan kun.....?????
+        if self.nameLE.text() == '':  # Jos nimikenttä on tyhjä laskenappula ei mene päälle
+            self.calculatePB.setEnabled(False) # laskenappula ei mene päälle
 
-    # Calculates BMI, finnish and US fat percentages and updates corresponding labels
+        if self.birthDateE.date() == QtCore.QDate(1900, 1,1):  # QtCoresta otetaan tietotyyppi QDate # Jos syntymäaika ei ole muutettu laskenappula ei mene päälle
+            self.calculatePB.setEnabled(False) 
+
+        if self.genderCB.currentText() == '':  # Jos sukupuolikenttä on tyhjä laskenappula ei mene päälle
+            self.calculatePB.setEnabled(False)  
+        
+        if self.heightSB.value() == 100:
+            self.calculatePB.setEnabled(False) 
+
+        if self.weightSB.value() == 20:
+            self.calculatePB.setEnabled(False) 
+        
+        if self.neckSB.value() == 10:
+            self.calculatePB.setEnabled(False) 
+
+        if self.waistSB.value() == 30:
+            self.calculatePB.setEnabled(False) 
+        
+        if  self.genderCB.currentText() == 'Nainen': # Naisen kohdalla pitää olla lantiokohta täytetty
+            self.hipSB.setEnabled(True) # lantio kohta tulee näkyviin vain jos on naine
+
+            if self.hipSB.value() == 50:
+                self.calculatePB.setEnabled(False)
+        else:
+            self.hipSB.setEnabled(False) # Miehelle ei tule lantiokohtaa
+
+    # Calculates BMI, finnish and US fat percentages andik updates corresponding labels
     def calculateAll(self):   # EI anneta argumentteja
         name = self.nameLE.text()
         height = self.heightSB.value() # Spinbox value as an integer
         weight = self.weightSB.value()
+        self.calculatePB.setEnabled(False) # Laskenappula menee harmaaksi kun lasku on laskettu
+        self.savePB.setEnabled(True) # Tallennanappulaa voi painaa kun tulos on laskettu
 
         # Convert birthday to ISO string using QtCore's methods
-        birthday = self.birthDateE.date().toString(format=QtCore.Qt.ISODate)
+        birthday = self.birthDateE.date().toString(format=QtCore.Qt.DateFormat.ISODate)
         
         # Set Gender Value according to ComboBox value
         gendertext = self.genderCB.currentText()
@@ -66,16 +113,38 @@ class MainWindow(QtWidgets.QMainWindow):   # Luokka alkaa aina isolla(MainWindow
             gender = 0
 
         # Convert Weighing day to ISO string
-        dateOFWeighing = str(self.weighingDateE.date().toString(format=QtCore.Qt.ISODate))
+        dateOfWeighing = self.weighingDateE.date().toString(format=QtCore.Qt.DateFormat.ISODate)
         
         # Calculate time difference using our home made tools
-        age = timetools.datediff2(birthday, dateOFWeighing, 'year') # Laskee iän. Syntymä aika - punnituspäivä
+        age = timetools.datediff2(birthday, dateOfWeighing, 'year') # Laskee iän. Syntymä aika - punnituspäivä
         
-        # Create an athlete from Kuntoilija class
-        athlete = kuntoilija.Kuntoilija(name, height, weight, age, gender, dateOFWeighing)
+
+        neck = self.neckSB.value() # Koska nämä ovat SpinBoxeja ei arvoa tarvitse muuttaa luvuksi koska ne ovat suoraan lukuja
+        waist = self.waistSB.value()
+        hip = self.hipSB.value()
+
+        if age >= 18: # Jos ikä on 18v tai enempi lasketaan tulos Kuntoilija laskukaavalla
+            # Create an athlete from Kuntoilija class for age 18 or above
+            athlete = kuntoilija.Kuntoilija(name, height, weight, age, gender, dateOfWeighing)
+           
+        else:
+            # Create the athlete from JuniorKuntoilija class for age under 18
+            athlete = kuntoilija.JunioriKuntoilija(name, height, weight, age, gender) # Jos ikä on alle 18v. lasketaan tulos JuniorKuntoilijan laskukaavalla
+
         bmi = athlete.bmi
-       
         self.bmiLabel.setText(str(bmi)) # Kun nappulaa painetaan tehdään tämä
+
+        fiFatPercentage = athlete.rasvaprosentti #fiFatPercentage = muuttuja eli keksitty. 
+
+        if gender == 1:
+            usaFatPercentage = athlete.usa_rasvaprosentti_mies(height, waist, neck)
+
+        else:
+            usaFatPercentage = athlete.usa_rasvaprosentti_nainen(height, waist, hip, neck)
+
+        self.fatFiLabel.setText(str(fiFatPercentage)) # muutetaan numeroista merkkijonoksi joten lissää () sisään (str())
+        self.fatUsaLabel.setText(str(usaFatPercentage))
+
 
     # TODO: Make this method to save results to a disk drive
     # Saves data to disk
