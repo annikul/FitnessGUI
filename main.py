@@ -49,13 +49,11 @@ class MainWindow(QtWidgets.QMainWindow):   # Luokka alkaa aina isolla(MainWindow
         self.hipSB.setEnabled(False)
         self.hipSB.valueChanged.connect(self.activateCalculatePB)
 
-        # TODO: Disable Calculate button until values have been edited
         # self.calculatePB = self.calculatePushButton # Tällä toimii kanssa. Alupuolella vaihtoehto. (Olion ominaisuus calculatePB ja oikeasti nappula on calculatePushButton)
         self.calculatePB = self.findChild(QtWidgets.QPushButton, 'calculatePushButton') # findChild tekee että osaa ehdottaa joitakin metodeja/ominaisuuksia 
         self.calculatePB.clicked.connect(self.calculateAll) # self.calculatePB.clicked.connect käynnistää oliosta jonka nimeä ei vielä tiedetä self.calculateAll (calculateAll = funktio)
         self.calculatePB.setEnabled(False)
 
-        # TODO: Disable Save button until new value are calculated
         # self.savePB = self.savePushButton # Tällä toimii kanssa. Alupuolella vaihtoehto
         self.savePB = self.findChild(QtWidgets.QPushButton, 'savePushButton') # findChild tekee että osaa ehdottaa joitakin metodeja/ominaisuuksia
         self.savePB.clicked.connect(self.saveData) 

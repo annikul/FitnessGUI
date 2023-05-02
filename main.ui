@@ -146,14 +146,14 @@
      </font>
     </property>
     <property name="text">
-     <string>Painoindeksi</string>
+     <string>0</string>
     </property>
    </widget>
    <widget class="QLabel" name="fatUsaLabel">
     <property name="geometry">
      <rect>
-      <x>190</x>
-      <y>270</y>
+      <x>20</x>
+      <y>330</y>
       <width>141</width>
       <height>16</height>
      </rect>
@@ -164,7 +164,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Rasvaprosentti (US)</string>
+     <string>0</string>
     </property>
    </widget>
    <widget class="QLabel" name="fatFiLabel">
@@ -172,7 +172,7 @@
      <rect>
       <x>20</x>
       <y>270</y>
-      <width>141</width>
+      <width>671</width>
       <height>16</height>
      </rect>
     </property>
@@ -182,7 +182,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Rasvaprosentti (FI)</string>
+     <string>0</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_11">
@@ -214,8 +214,8 @@
    <widget class="QLabel" name="label_13">
     <property name="geometry">
      <rect>
-      <x>190</x>
-      <y>250</y>
+      <x>20</x>
+      <y>310</y>
       <width>121</width>
       <height>16</height>
      </rect>
