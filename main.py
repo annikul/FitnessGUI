@@ -123,7 +123,7 @@ class MainWindow(QtWidgets.QMainWindow):   # Luokka alkaa aina isolla(MainWindow
 
         if age >= 18: # Jos ikä on 18v tai enempi lasketaan tulos Kuntoilija laskukaavalla
             # Create an athlete from Kuntoilija class for age 18 or above
-            athlete = kuntoilija.Kuntoilija(name, height, weight, age, gender, dateOfWeighing)
+            athlete = kuntoilija.Kuntoilija(name, height, weight, age, gender, dateOfWeighing) # athlete on sisäinen muuttuja???
            
         else:
             # Create the athlete from JuniorKuntoilija class for age under 18
@@ -140,11 +140,20 @@ class MainWindow(QtWidgets.QMainWindow):   # Luokka alkaa aina isolla(MainWindow
         else:
             usaFatPercentage = athlete.usa_rasvaprosentti_nainen(height, waist, hip, neck)
 
+        # Set fat percentage labels
         self.fatFiLabel.setText(str(fiFatPercentage)) # muutetaan numeroista merkkijonoksi joten lissää () sisään (str())
         self.fatUsaLabel.setText(str(usaFatPercentage))
 
+    def constructData(self, athlete, fiFat, usaFat):
+        # A dictionary for single weighing of an athlete
+        athlete_data_row = {'nimi': athlete.nimi, 'pituus': athlete.pituus, 'paino': athlete.paino, 
+                    'ika': athlete.ika, 'sukupuoli': athlete.sukupuoli, 'pvm': athlete.punnitus_paiva,
+                    'bmi': athlete.bmi, 'rasvaprosenttiFi': fiFat, 'rasvaprosenttiUs': usaFat } 
+        # athlete on olio jossa on kaikki minkä edessä lukee athlete. 
+        # Fi ja Usa rasvaprosentissa ei ole edessä athlete koska ne eivät ole oliossa vaan olion metodissa
+        return athlete_data_row
+    
 
-    # TODO: Make this method to save results to a disk drive
     # Saves data to disk
     def saveData(self):     # metodi joka ei vielä tee mitään
         pass
