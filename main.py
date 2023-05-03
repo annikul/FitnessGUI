@@ -45,9 +45,9 @@ class MainWindow(QtWidgets.QMainWindow):   # Luokka alkaa aina isolla(MainWindow
         self.neckSB.valueChanged.connect(self.activateCalculatePB)
         self.waistSB = self.waistSpinBox
         self.waistSB.valueChanged.connect(self.activateCalculatePB)
-        self.hipSB = self.hipSpinBox
-        self.hipSB.setEnabled(False)
-        self.hipSB.valueChanged.connect(self.activateCalculatePB)
+        self.hipsSB = self.hipsSpinBox
+        self.hipsSB.setEnabled(False)
+        self.hipsSB.valueChanged.connect(self.activateCalculatePB)
 
         # self.calculatePB = self.calculatePushButton # Tällä toimii kanssa. Alupuolella vaihtoehto. (Olion ominaisuus calculatePB ja oikeasti nappula on calculatePushButton)
         self.calculatePB = self.findChild(QtWidgets.QPushButton, 'calculatePushButton') # findChild tekee että osaa ehdottaa joitakin metodeja/ominaisuuksia 
@@ -84,12 +84,12 @@ class MainWindow(QtWidgets.QMainWindow):   # Luokka alkaa aina isolla(MainWindow
             self.calculatePB.setEnabled(False) 
         
         if  self.genderCB.currentText() == 'Nainen': # Naisen kohdalla pitää olla lantiokohta täytetty
-            self.hipSB.setEnabled(True) # lantio kohta tulee näkyviin vain jos on naine
+            self.hipsSB.setEnabled(True) # lantio kohta tulee näkyviin vain jos on naine
 
-            if self.hipSB.value() == 50:
+            if self.hipsSB.value() == 50:
                 self.calculatePB.setEnabled(False)
         else:
-            self.hipSB.setEnabled(False) # Miehelle ei tule lantiokohtaa
+            self.hipsSB.setEnabled(False) # Miehelle ei tule lantiokohtaa
 
     # Calculates BMI, finnish and US fat percentages andik updates corresponding labels
     def calculateAll(self):   # EI anneta argumentteja
@@ -119,27 +119,15 @@ class MainWindow(QtWidgets.QMainWindow):   # Luokka alkaa aina isolla(MainWindow
 
         neck = self.neckSB.value() # Koska nämä ovat SpinBoxeja ei arvoa tarvitse muuttaa luvuksi koska ne ovat suoraan lukuja
         waist = self.waistSB.value()
-        hip = self.hipSB.value()
+        hips = self.hipsSB.value()
 
-        if age >= 18: # Jos ikä on 18v tai enempi lasketaan tulos Kuntoilija laskukaavalla
-            # Create an athlete from Kuntoilija class for age 18 or above
-            athlete = kuntoilija.Kuntoilija(name, height, weight, age, gender, dateOfWeighing) # athlete on sisäinen muuttuja???
-           
-        else:
-            # Create the athlete from JuniorKuntoilija class for age under 18
-            athlete = kuntoilija.JunioriKuntoilija(name, height, weight, age, gender) # Jos ikä on alle 18v. lasketaan tulos JuniorKuntoilijan laskukaavalla
+        athlete = kuntoilija.Kuntoilija(name, height, weight, age, gender, neck, waist, hips, dateOfWeighing)
 
         bmi = athlete.bmi
         self.bmiLabel.setText(str(bmi)) # Kun nappulaa painetaan tehdään tämä
 
-        fiFatPercentage = athlete.rasvaprosentti #fiFatPercentage = muuttuja eli keksitty. 
-
-        if gender == 1:
-            usaFatPercentage = athlete.usa_rasvaprosentti_mies(height, waist, neck)
-
-        else:
-            usaFatPercentage = athlete.usa_rasvaprosentti_nainen(height, waist, hip, neck)
-
+        fiFatPercentage = athlete.fi_rasva #fiFatPercentage = muuttuja eli keksitty. athleten alta otetaan fi_rasva
+        usaFatPercentage = athlete.usa_rasva # athleten alta otetaan usa_rasva
         # Set fat percentage labels
         self.fatFiLabel.setText(str(fiFatPercentage)) # muutetaan numeroista merkkijonoksi joten lissää () sisään (str())
         self.fatUsaLabel.setText(str(usaFatPercentage))

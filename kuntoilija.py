@@ -6,6 +6,8 @@
 # KIRJASTOT JA MODUULIT (LIBRARIES AND MODULES)
 # ---------------------------------------------
 
+# Kaikki tarvittava tieto löytyy kuntoilija oliosta
+
 import fitness
 
 # LUOKKAMÄÄRITYKSET (CLASS DEFINITIONS)

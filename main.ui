@@ -152,8 +152,8 @@
    <widget class="QLabel" name="fatUsaLabel">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>330</y>
+      <x>160</x>
+      <y>270</y>
       <width>141</width>
       <height>16</height>
      </rect>
@@ -172,7 +172,7 @@
      <rect>
       <x>20</x>
       <y>270</y>
-      <width>671</width>
+      <width>111</width>
       <height>16</height>
      </rect>
     </property>
@@ -214,8 +214,8 @@
    <widget class="QLabel" name="label_13">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>310</y>
+      <x>160</x>
+      <y>250</y>
       <width>121</width>
       <height>16</height>
      </rect>
@@ -366,7 +366,7 @@
      <number>30</number>
     </property>
    </widget>
-   <widget class="QSpinBox" name="hipSpinBox">
+   <widget class="QSpinBox" name="hipsSpinBox">
     <property name="geometry">
      <rect>
       <x>380</x>

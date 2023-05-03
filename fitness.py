@@ -78,6 +78,7 @@ def usarasvaprosentti_mies(pituus, vyotaron_ymparys, kaulan_ymparys):
     # Lasketaan rasvaprosentti
     usarprosentti = 86.010 * math.log10(tuuma_vyotaron_ymparys -
                                         tuuma_kaulan_ymparys) - 70.041 * math.log10(tuuma_pituus) + 36.76
+    usarprosentti = round(usarprosentti, 1)
     return usarprosentti
 
 
@@ -101,6 +102,8 @@ def usarasvaprosentti_nainen(pituus, vyotaron_ymparys, lantion_ymparys, kaulan_y
 
     usa_rasvaprosentti = 163.205 * math.log10(tuuma_vyotaron_ymparys + tuuma_lantion_ymparys -
                                                tuuma_kaulan_ymparys) - 97.684 * math.log10(tuuma_pituus) - 78.387
+    
+    usa_rasvaprosentti = round(usa_rasvaprosentti, 1)
     return usa_rasvaprosentti
 
 # Suoritetaan seuraavat rivit vain, jos tämä tiedosto on pääohjelma
