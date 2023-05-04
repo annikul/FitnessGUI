@@ -10,6 +10,7 @@ from PyQt6 import QtWidgets # UI elements functionality
 from PyQt6.uic.load_ui import loadUi # Reads the UI file 
 import kuntoilija # Home brew module for athlete
 import timetools # DIY module for date and time calculations
+import athleteFile # Home made module for processing data files
 # TODO: Import some library able to plot trends and make it as widgets in the UI
 
 # Class for the main window
@@ -59,7 +60,21 @@ class MainWindow(QtWidgets.QMainWindow):   # Luokka alkaa aina isolla(MainWindow
         self.savePB.clicked.connect(self.saveData) 
         self.savePB.setEnabled(False) # pisti harmaaksi tallennus nappulan
 
+        # Read data from file and save it to a list. Ensimmäisellä kerralla kaatuu virheeseen koska teidostoa ja listaa ei vielä ole.
+        self.dataList = []   # datalist = muuttuja, oma keksimä. = [] eli määritellään että lista on tyhjä. Luetaan tiedosto datalistaan 
+        jsonFile = athleteFile.ProcessJsonFile() # Kutsutaan 
+        data = jsonFile.readData ('athleteData.json') # Luetaan tiedosto. athleteData.json on oma keksimä
+        self.dataList = data
+
+
+        # Joka kerta kun softa käynnistetään uudestaan. Vanhojen mittojen perään tulee aina uudet mitat
+    
+    
+    
     # Define slots ie methods
+
+
+
     def activateCalculatePB(self): # Laskenappula aktivoituu vasta kun kaikki tiedot on laitettu!
         self.calculatePB.setEnabled(True) # Aktivoi laskenappulan kun.....?????
         if self.nameLE.text() == '':  # Jos nimikenttä on tyhjä laskenappula ei mene päälle
@@ -128,17 +143,19 @@ class MainWindow(QtWidgets.QMainWindow):   # Luokka alkaa aina isolla(MainWindow
 
         fiFatPercentage = athlete.fi_rasva #fiFatPercentage = muuttuja eli keksitty. athleten alta otetaan fi_rasva
         usaFatPercentage = athlete.usa_rasva # athleten alta otetaan usa_rasva
+
         # Set fat percentage labels
         self.fatFiLabel.setText(str(fiFatPercentage)) # muutetaan numeroista merkkijonoksi joten lissää () sisään (str())
         self.fatUsaLabel.setText(str(usaFatPercentage))
 
-    def constructData(self, athlete, fiFat, usaFat):
+        self.dataRow = self.constructData(athlete) # data on oliossa???
+        print(self.dataRow) # Tällä voidaan testata että dictionary näyttä järkevältä
+
+    def constructData(self, athlete):  # athlete on olio jossa on kaikki minkä edessä lukee athlete. 
         # A dictionary for single weighing of an athlete
         athlete_data_row = {'nimi': athlete.nimi, 'pituus': athlete.pituus, 'paino': athlete.paino, 
                     'ika': athlete.ika, 'sukupuoli': athlete.sukupuoli, 'pvm': athlete.punnitus_paiva,
-                    'bmi': athlete.bmi, 'rasvaprosenttiFi': fiFat, 'rasvaprosenttiUs': usaFat } 
-        # athlete on olio jossa on kaikki minkä edessä lukee athlete. 
-        # Fi ja Usa rasvaprosentissa ei ole edessä athlete koska ne eivät ole oliossa vaan olion metodissa
+                    'bmi': athlete.bmi, 'rasvaprosenttiFi': athlete.fi_rasva, 'rasvaprosenttiUs': athlete.usa_rasva} 
         return athlete_data_row
     
 

@@ -40,7 +40,7 @@ class ProcessJsonFile():
         """
 
         # Read previous athlete_data from disk
-        with open(file, 'r') as fileToRead:
+        with open(file, 'r') as fileToRead:  # 'r' = luetaan file
             athlete_data = json.load(fileToRead)
             message = 'OK'
             detailedMessage = 'Data read successfully from disk'
