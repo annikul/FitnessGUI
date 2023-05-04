@@ -60,13 +60,14 @@ class MainWindow(QtWidgets.QMainWindow):   # Luokka alkaa aina isolla(MainWindow
         self.savePB.clicked.connect(self.saveData) 
         self.savePB.setEnabled(False) # pisti harmaaksi tallennus nappulan
 
-        # Read data from file and save it to a list. Ensimmäisellä kerralla kaatuu virheeseen koska teidostoa ja listaa ei vielä ole.
+        # Read data from file and save it to a list
         self.dataList = []   # datalist = muuttuja, oma keksimä. = [] eli määritellään että lista on tyhjä. Luetaan tiedosto datalistaan 
         jsonFile = athleteFile.ProcessJsonFile() # Kutsutaan 
-        data = jsonFile.readData ('athleteData.json') # Luetaan tiedosto. athleteData.json on oma keksimä
-        self.dataList = data
-
-
+        try:
+            data = jsonFile.readData('athleteData.json')
+            self.dataList = data[3] 
+        except Exception as e:
+            data = (1, 'Error', str(e), self.dataList)  # Palauttaa virhekoodin, virheselitys, yksityiskohtaisen virhekuvauksen ja datan.
         # Joka kerta kun softa käynnistetään uudestaan. Vanhojen mittojen perään tulee aina uudet mitat
     
     
@@ -158,10 +159,20 @@ class MainWindow(QtWidgets.QMainWindow):   # Luokka alkaa aina isolla(MainWindow
                     'bmi': athlete.bmi, 'rasvaprosenttiFi': athlete.fi_rasva, 'rasvaprosenttiUs': athlete.usa_rasva} 
         return athlete_data_row
     
-
     # Saves data to disk
-    def saveData(self):     # metodi joka ei vielä tee mitään
-        pass
+    def saveData(self): 
+        self.dataList.append(self.dataRow)
+        jsonfile2 = athleteFile.ProcessJsonFile()
+        status = jsonfile2.saveData('athleteData.json', self.dataList)
+        self.nameLE.clear() # Kun käyttäjä on tallentanut tiedot. Palaa kaikki kohdat alkupisteeseen
+        zeroDate = QtCore.QDate('1900, 1, 1')
+        self.birthDateE.setDate(zeroDate)
+        self.heightSB.setValue(100)
+        self.weightSB.setValue(20)
+        self.neckSB.set.Value(10)
+        self.waistSB.setValue(30)
+        self.hipsSB.setValue(50)
+        self.savePB.set.Enabled(False)
 
 if __name__ == "__main__":
     # Create the application

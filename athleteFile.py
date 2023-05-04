@@ -20,14 +20,18 @@ class ProcessJsonFile():
         Args:
             file (str): Name of the file
             data (list): List of dictionaries
-        Returns:
+       
+         Returns:
             tuple: Error code, Error message, detailed error message
         """
         
-        with open(file, 'w') as fileToWrite:
-            json.dump(data, fileToWrite, indent=4)
-        status = (0, 'Tallennus onnistui', 'All data saved successfully')
-        return status
+        with open(file, 'w') as fileToWrite: # w koska halutaan kirjoittaa json.
+            json.dump(data, fileToWrite, indent=4) # Haetaan json kirjastosta dump. dump haluaa objektin ja fp eli tiedoston. 
+        status = (0, 'Tallennus onnistui', 'All data saved successfully')   # Jos haluaa AINA vikaksi voi laittaa indent=4 eli 4 välin sisennys (sisentää tekstin helpommin luettavaksi)
+        return status                             # Palauttaa statustiedon  # Sen jälkeen tallenna ja aja terminaali
+       
+    
+
     
     def readData(self, file):
         """Reads athlete data from file

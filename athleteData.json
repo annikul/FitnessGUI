@@ -1,0 +1,46 @@
+[
+    {
+        "nimi": "MikaV",
+        "pituus": 171.0,
+        "paino": 75.0,
+        "ika": 60.895890410958906,
+        "sukupuoli": 1,
+        "pvm": "2023-05-04",
+        "bmi": 25.6,
+        "rasvaprosenttiFi": 28.5,
+        "rasvaprosenttiUs": 26.8
+    },
+    {
+        "nimi": "EssiE",
+        "pituus": 175.0,
+        "paino": 69.0,
+        "ika": 23.161643835616438,
+        "sukupuoli": 0,
+        "pvm": "2023-05-04",
+        "bmi": 22.5,
+        "rasvaprosenttiFi": 26.9,
+        "rasvaprosenttiUs": 26.2
+    },
+    {
+        "nimi": "testi",
+        "pituus": 190.0,
+        "paino": 110.0,
+        "ika": 119.41917808219178,
+        "sukupuoli": 1,
+        "pvm": "2023-05-04",
+        "bmi": 30.5,
+        "rasvaprosenttiFi": 47.9,
+        "rasvaprosenttiUs": 26.6
+    },
+    {
+        "nimi": "testi2",
+        "pituus": 155.0,
+        "paino": 60.0,
+        "ika": 58.342465753424655,
+        "sukupuoli": 0,
+        "pvm": "2023-05-04",
+        "bmi": 25.0,
+        "rasvaprosenttiFi": 38.0,
+        "rasvaprosenttiUs": 8.9
+    }
+]
