@@ -77,7 +77,7 @@ class MainWindow(QtWidgets.QMainWindow):   # Luokka alkaa aina isolla(MainWindow
 
 
     def activateCalculatePB(self): # Laskenappula aktivoituu vasta kun kaikki tiedot on laitettu!
-        self.calculatePB.setEnabled(True) # Aktivoi laskenappulan kun.....?????
+        self.calculatePB.setEnabled(True) # Aktivoi laskenappulan
         if self.nameLE.text() == '':  # Jos nimikenttä on tyhjä laskenappula ei mene päälle
             self.calculatePB.setEnabled(False) # laskenappula ei mene päälle
 
@@ -146,10 +146,10 @@ class MainWindow(QtWidgets.QMainWindow):   # Luokka alkaa aina isolla(MainWindow
         usaFatPercentage = athlete.usa_rasva # athleten alta otetaan usa_rasva
 
         # Set fat percentage labels
-        self.fatFiLabel.setText(str(fiFatPercentage)) # muutetaan numeroista merkkijonoksi joten lissää () sisään (str())
+        self.fatFiLabel.setText(str(fiFatPercentage)) # muutetaan numeroista merkkijonoksi joten lisää () sisään (str())
         self.fatUsaLabel.setText(str(usaFatPercentage))
 
-        self.dataRow = self.constructData(athlete) # data on oliossa???
+        self.dataRow = self.constructData(athlete) # athlete = muuttuja.constructData funktio palauttaa athlete datan oliomuodossa. Rivit 155-160 tekevät tämän.
         print(self.dataRow) # Tällä voidaan testata että dictionary näyttä järkevältä
 
     def constructData(self, athlete):  # athlete on olio jossa on kaikki minkä edessä lukee athlete. 
@@ -157,7 +157,7 @@ class MainWindow(QtWidgets.QMainWindow):   # Luokka alkaa aina isolla(MainWindow
         athlete_data_row = {'nimi': athlete.nimi, 'pituus': athlete.pituus, 'paino': athlete.paino, 
                     'ika': athlete.ika, 'sukupuoli': athlete.sukupuoli, 'pvm': athlete.punnitus_paiva,
                     'bmi': athlete.bmi, 'rasvaprosenttiFi': athlete.fi_rasva, 'rasvaprosenttiUs': athlete.usa_rasva} 
-        return athlete_data_row
+        return athlete_data_row     
     
     # Saves data to disk
     def saveData(self): 
