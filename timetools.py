@@ -75,13 +75,13 @@ def datediff2(d1, d2, unit):
     d1 = datetime.datetime.strptime(d1, "%Y-%m-%d")
     d2 = datetime.datetime.strptime(d2, "%Y-%m-%d")   
     difference = abs((d2 - d1).days) # Timedelta in days
-    units = {'day':1, 'year': 365, 'mont': 30}  # Dictionary for unit dividers # units = muuttuja, meidän sanakirja. Jos vastaus on day jaetaan 1 jos vuosi jaetaan 365    
+    units = {'day':1, 'year': 365, 'month': 30}  # Dictionary for unit dividers # units = muuttuja, meidän sanakirja. Jos vastaus on day jaetaan 1 jos vuosi jaetaan 365    
     divider = units[unit]           # Choose by unit argument # units sanakirja josta haetaan unit.
     value = round(difference / divider, 1)    # arvo mikä palautetaan
     return value
 
 def timediff2(t1, t2, unit):
-    """Calculates the  difference between two time values in chosen unit (day, minute or second)(tämä on ohje mitä docstring tekee)
+    """Calculates the  difference between two time values in chosen unit (hour, minute or second)(tämä on ohje mitä docstring tekee)
 
     Args:
         t1 (str): time value in format HH:MM:SS
@@ -123,7 +123,7 @@ def finnishWeekdayOrder(weekday):
     weekdayNumber = {'maanantai': 1, 'tiistai': 2, 'keskiviikko' : 3,
      'torstai' : 4, 'perjantai': 5, 'lauantai': 6, 'sunnuntai': 7}
     try:
-        value = f'{weekday} on viikon {finnishWeekdayOrder[weekday]}. päivä'
+        value = f'{weekday} on viikon {weekdayNumber[weekday]}. päivä'
     except Exception as error:
         value = f'{weekday} ei ole viikonpäivä, tarkista syötteesi'
     return value
@@ -131,7 +131,7 @@ def finnishWeekdayOrder(weekday):
 
 
 
-if __name__ == '__main__': # Kehityksen aikaisia kokeiluja / toimivuuden varmistamisia. (Että funktiot toimii) Nämä testit voi poistaa
+if __name__ == '__main__': # Kehityksen aikaisia kokeiluja / toimivuuden varmistamisia. (Että funktiot toimii) Nämä testit voi poistaa/kuuluuu poistaa
 
     # Let's test date difference
     date1 = '2023-03-21'

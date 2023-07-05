@@ -42,5 +42,16 @@
         "bmi": 25.0,
         "rasvaprosenttiFi": 38.0,
         "rasvaprosenttiUs": 8.9
+    },
+    {
+        "nimi": "Neppe",
+        "pituus": 187.0,
+        "paino": 160.0,
+        "ika": 123.4,
+        "sukupuoli": 1,
+        "pvm": "2023-05-13",
+        "bmi": 45.8,
+        "rasvaprosenttiFi": 67.1,
+        "rasvaprosenttiUs": 38.8
     }
 ]
