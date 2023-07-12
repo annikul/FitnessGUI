@@ -6,7 +6,7 @@
 # LIBRARIES AND MODULES
 import sys # For system arguments if needed to run the app
 from PyQt6 import QtCore  # Core functionality of Qt # Kirjastosta PyQt6 otetaan komponentti QtCore
-from PyQt6 import QtWidgets # UI elements functionality
+from PyQt6 import QtWidgets as QW # UI elements functionality
 from PyQt6.uic.load_ui import loadUi # Reads the UI file 
 import kuntoilija # Home brew module for athlete
 import timetools # DIY module for date and time calculations
@@ -14,7 +14,7 @@ import athleteFile # Home made module for processing data files
 # TODO: Import some library able to plot trends and make it as widgets in the UI
 
 # Class for the main window
-class MainWindow(QtWidgets.QMainWindow):   # Luokka alkaa aina isolla(MainWindow) ja koska se perii niin toisiin sulkuihin(QtWidgets.QMainWindow)(tehty ikkuna designilla) jos ei perisi mitään otetaan toiset ()pois
+class MainWindow(QW.QMainWindow):   # Luokka alkaa aina isolla(MainWindow) ja koska se perii niin toisiin sulkuihin(QtWidgets.QMainWindow)(tehty ikkuna designilla) jos ei perisi mitään otetaan toiset ()pois
     
     """MainWindow for the fitness app"""
 
@@ -27,7 +27,7 @@ class MainWindow(QtWidgets.QMainWindow):   # Luokka alkaa aina isolla(MainWindow
 
         # Define UI Controls ie buttons and input fields
         # self.nameLE = self.nameLineEdit   # tulee tekstiä. Tällä toimii. Alla toinen vaihtoehto
-        self.nameLE = self.findChild(QtWidgets.QLineEdit, 'nameLineEdit') # findChild tekee että osaa ehdottaa joitakin metodeja/ominaisuuksia 
+        self.nameLE = self.findChild(QW.QLineEdit, 'nameLineEdit') # findChild tekee että osaa ehdottaa joitakin metodeja/ominaisuuksia 
         self.nameLE.textEdited.connect(self.activateCalculatePB) # Nyt kun nimikenttää muokataan se kutsuu funktiota activateCalculatePB. Alhaalla tallennanappula menee päälle.
        
         self.birthDateE = self.birthDateEdit  # ensimmäinen self.keksitty
@@ -50,13 +50,18 @@ class MainWindow(QtWidgets.QMainWindow):   # Luokka alkaa aina isolla(MainWindow
         self.hipsSB.setEnabled(False)
         self.hipsSB.valueChanged.connect(self.activateCalculatePB)
 
+        # Create a status bar for showing informational messages
+        self.statusBar = QW.QStatusBar() # statusBar on olio
+        self.setStatusBar(self.statusBar) # Tässä kutsutaan statusBar oliota
+        self.statusBar.show() # Oletus on että statusBar ei näy ja tällä sen saa näkyviin.
+
         # self.calculatePB = self.calculatePushButton # Tällä toimii kanssa. Alupuolella vaihtoehto. (Olion ominaisuus calculatePB ja oikeasti nappula on calculatePushButton)
-        self.calculatePB = self.findChild(QtWidgets.QPushButton, 'calculatePushButton') # findChild tekee että osaa ehdottaa joitakin metodeja/ominaisuuksia 
+        self.calculatePB = self.findChild(QW.QPushButton, 'calculatePushButton') # findChild tekee että osaa ehdottaa joitakin metodeja/ominaisuuksia 
         self.calculatePB.clicked.connect(self.calculateAll) # self.calculatePB.clicked.connect käynnistää oliosta jonka nimeä ei vielä tiedetä self.calculateAll (calculateAll = funktio)
         self.calculatePB.setEnabled(False)
 
         # self.savePB = self.savePushButton # Tällä toimii kanssa. Alupuolella vaihtoehto
-        self.savePB = self.findChild(QtWidgets.QPushButton, 'savePushButton') # findChild tekee että osaa ehdottaa joitakin metodeja/ominaisuuksia
+        self.savePB = self.findChild(QW.QPushButton, 'savePushButton') # findChild tekee että osaa ehdottaa joitakin metodeja/ominaisuuksia
         self.savePB.clicked.connect(self.saveData) 
         self.savePB.setEnabled(False) # pisti harmaaksi tallennus nappulan
 
@@ -70,11 +75,17 @@ class MainWindow(QtWidgets.QMainWindow):   # Luokka alkaa aina isolla(MainWindow
             data = (1, 'Error', str(e), self.dataList)  # Palauttaa virhekoodin, virheselitys, yksityiskohtaisen virhekuvauksen ja datan.
         # Joka kerta kun softa käynnistetään uudestaan. Vanhojen mittojen perään tulee aina uudet mitat
     
-    
-    
-    # Define slots ie methods
 
+        # Define slots ie methods
 
+# Create a alerting method
+    def alert(self, message, detailedMessage):
+        msgBox = QW.QMessageBox() # Luodaan ensiksi tyhjä olio
+        msgBox.setIcon(QW.QMessageBox.critical) # Asetetaan arvoja
+        msgBox.setWindowTitle('Tapahtui vakava virhe') # Yleiskäyttöinen viesti
+        msgBox.setText(message) # Välitetään message argumentti
+        msgBox.setDetailedText(detailedMessage)
+        msgBox.exec()
 
     def activateCalculatePB(self): # Laskenappula aktivoituu vasta kun kaikki tiedot on laitettu!
         self.calculatePB.setEnabled(True) # Aktivoi laskenappulan
@@ -131,8 +142,6 @@ class MainWindow(QtWidgets.QMainWindow):   # Luokka alkaa aina isolla(MainWindow
         
         # Calculate time difference using our home made tools
         age = timetools.datediff2(birthday, dateOfWeighing, 'year') # Laskee iän. Syntymä aika - punnituspäivä
-        
-
         neck = self.neckSB.value() # Koska nämä ovat SpinBoxeja ei arvoa tarvitse muuttaa luvuksi koska ne ovat suoraan lukuja
         waist = self.waistSB.value()
         hips = self.hipsSB.value()
@@ -161,23 +170,37 @@ class MainWindow(QtWidgets.QMainWindow):   # Luokka alkaa aina isolla(MainWindow
     
     # Saves data to disk
     def saveData(self): 
+
+        # Add current values to a list
         self.dataList.append(self.dataRow)
+
+        # Save list to a json file
         jsonfile2 = athleteFile.ProcessJsonFile()
         status = jsonfile2.saveData('athleteData.json', self.dataList)
-        self.nameLE.clear() # Kun käyttäjä on tallentanut tiedot. Palaa kaikki kohdat alkupisteeseen
-        zeroDate = QtCore.QDate('1900, 1, 1')
-        self.birthDateE.setDate(zeroDate)
-        self.heightSB.setValue(100)
-        self.weightSB.setValue(20)
-        self.neckSB.set.Value(10)
-        self.waistSB.setValue(30)
-        self.hipsSB.setValue(50)
-        self.savePB.set.Enabled(False)
+        
+        # Show message about status of saving on statusbar
+        self.statusBar.showMessage(status[1], 4000)
+
+        # TODO: Call error message box if error code is not 0
+        if status[0] != 0:  # Jos status on 0 kutsutaan metodia
+            self.alert(status[1], status[2]) # Jos status on 1 tai 2 tulee error koodi
+        else: 
+            # Set all inputs to their default values
+            self.nameLE.clear() # Kun käyttäjä on tallentanut tiedot. Palaa kaikki kohdat alkupisteeseen
+            zeroDate = QtCore.QDate(1900, 1, 1)
+            self.birthDateE.setDate(zeroDate)
+            self.heightSB.setValue(100)
+            self.weightSB.setValue(20)
+            self.neckSB.setValue(10)
+            self.waistSB.setValue(30)
+            self.hipsSB.setValue(50)
+            self.savePB.setEnabled(False)
 
 if __name__ == "__main__":
     # Create the application
-    app = QtWidgets.QApplication(sys.argv)
-
+    app = QW.QApplication(sys.argv)
+    app.setStyle('Fusion') # Use fusion style 
+   
     # Create the main window object from MainWindow class and show it on the screen
     appWindow = MainWindow()
     appWindow.main.show()

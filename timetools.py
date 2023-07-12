@@ -119,7 +119,7 @@ def dateTimeDiff2(start, end, unit):
     value = seconds / divider
     return value
 
-def finnishWeekdayOrder(weekday):
+def finnishWeekdayOrder(weekday): # Esimerkki testiin jos ei ole lukuja
     weekdayNumber = {'maanantai': 1, 'tiistai': 2, 'keskiviikko' : 3,
      'torstai' : 4, 'perjantai': 5, 'lauantai': 6, 'sunnuntai': 7}
     try:
