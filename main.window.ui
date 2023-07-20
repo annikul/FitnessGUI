@@ -408,6 +408,19 @@
      <string>Tallenna</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="testiUiPushButton">
+    <property name="geometry">
+     <rect>
+      <x>580</x>
+      <y>200</y>
+      <width>80</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Testaa</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

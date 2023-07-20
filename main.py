@@ -60,6 +60,11 @@ class MainWindow(QW.QMainWindow):   # Luokka alkaa aina isolla(MainWindow) ja ko
         self.calculatePB.clicked.connect(self.calculateAll) # self.calculatePB.clicked.connect käynnistää oliosta jonka nimeä ei vielä tiedetä self.calculateAll (calculateAll = funktio)
         self.calculatePB.setEnabled(False)
 
+        # Temporary push button for inserting test values into controls
+        #self.testPB = self.testiUiPushButton
+        self.testPB = self.findChild(QW.QPushButton, 'testiUiPushButton')
+        self.testPB.clicked.connect(self.insertTestValues)
+
         # self.savePB = self.savePushButton # Tällä toimii kanssa. Alupuolella vaihtoehto
         self.savePB = self.findChild(QW.QPushButton, 'savePushButton') # findChild tekee että osaa ehdottaa joitakin metodeja/ominaisuuksia
         self.savePB.clicked.connect(self.saveData) 
@@ -79,10 +84,46 @@ class MainWindow(QW.QMainWindow):   # Luokka alkaa aina isolla(MainWindow) ja ko
         # Define slots ie methods
 
 # Create a alerting method
-    def alert(self, message, detailedMessage):
+    def alert(self, windowTitle, message, detailedMessage):
         msgBox = QW.QMessageBox() # Luodaan ensiksi tyhjä olio
-        msgBox.setIcon(QW.QMessageBox.critical) # Asetetaan arvoja
-        msgBox.setWindowTitle('Tapahtui vakava virhe') # Yleiskäyttöinen viesti
+        msgBox.setIcon(QW.QMessageBox.Icon.Critical) # Asetetaan ikoni
+        msgBox.setWindowTitle(windowTitle) # Yleiskäyttöinen viesti
+        msgBox.setText(message) # Välitetään message argumentti
+        msgBox.setDetailedText(detailedMessage)
+        msgBox.exec()
+
+    def warn(self, windowTitle, message, detailedMessage):
+        msgBox = QW.QMessageBox() # Luodaan ensiksi tyhjä olio
+        msgBox.setIcon(QW.QMessageBox.Icon.Warning) # Asetetaan ikoni
+        msgBox.setWindowTitle(windowTitle) # Yleiskäyttöinen viesti
+        msgBox.setText(message) # Välitetään message argumentti
+        msgBox.setDetailedText(detailedMessage)
+        msgBox.exec()
+
+    def inform(self, windowTitle, message, detailedMessage):
+        msgBox = QW.QMessageBox() # Luodaan ensiksi tyhjä olio
+        msgBox.setIcon(QW.QMessageBox.Icon.Information) # Asetetaan ikoni
+        msgBox.setWindowTitle(windowTitle) # Yleiskäyttöinen viesti
+        msgBox.setText(message) # Välitetään message argumentti
+        msgBox.setDetailedText(detailedMessage)
+        msgBox.exec()
+
+    def showMessageBox(self, windowTitle, message, detailedMessage, icon='Information'):
+        """Creates a message box for various types of messages
+
+        Args:
+            windowTitle (str): Header for the message window
+            message (str): Message to be shown
+            detailedMessage (str): Detailed message to be shown
+            icon (str, optional): Allowed values: NoIcon, Information, Question, Warning and Critical Defaulst to information.
+        """
+        # Sanakirja
+        iconTypes = {'Information': QW.QMessageBox.information, 'NoIcon': QW.QMessageBox.Icon.NoIcon,
+                     'Question': QW.QMessageBox.Icon.Question, 'Warning': QW.QMessageBox.Icon.Warning,
+                     'Critical': QW.QMessageBox.Icon.Critical}
+        msgBox = QW.QMessageBox() # Luodaan ensiksi tyhjä olio
+        msgBox.setIcon(iconTypes[icon])
+        msgBox.setWindowTitle(windowTitle) # Yleiskäyttöinen viesti
         msgBox.setText(message) # Välitetään message argumentti
         msgBox.setDetailedText(detailedMessage)
         msgBox.exec()
@@ -118,6 +159,17 @@ class MainWindow(QW.QMainWindow):   # Luokka alkaa aina isolla(MainWindow) ja ko
         else:
             self.hipsSB.setEnabled(False) # Miehelle ei tule lantiokohtaa
 
+    def insertTestValues(self): # Testi henkilö
+        # Set test values to all controls
+        self.nameLE.setText('Teppo Testi')
+        testBirthDate = QtCore.QDate(1999, 12, 31)
+        self.birthDateE.setDate(testBirthDate)
+        self.genderCB.setCurrentText('Mies')
+        self.heightSB.setValue(171)
+        self.weightSB.setValue(75)
+        self.neckSB.setValue(30)
+        self.waistSB.setValue(90)
+        
     # Calculates BMI, finnish and US fat percentages andik updates corresponding labels
     def calculateAll(self):   # EI anneta argumentteja
         name = self.nameLE.text()
@@ -142,7 +194,10 @@ class MainWindow(QW.QMainWindow):   # Luokka alkaa aina isolla(MainWindow) ja ko
         
         # Calculate time difference using our home made tools
         age = timetools.datediff2(birthday, dateOfWeighing, 'year') # Laskee iän. Syntymä aika - punnituspäivä
-        neck = self.neckSB.value() # Koska nämä ovat SpinBoxeja ei arvoa tarvitse muuttaa luvuksi koska ne ovat suoraan lukuja
+        neck = self.neckSB.value() # Nämä on SpinBoxeja eli arvoa ei tarvitse muuttaa luvuksi. Ovat suoraan lukuja
+        if neck < 21:
+            #self.alert('Tarkista kaulan koko', 'Kaulan ympärys liian pieni', 'Kaulan koko voi olla välillä 21 - 60 cm') # 1 virheilmoitus 2. tarkempi kun painaa details
+            self.showMessageBox('Tarkista kaulan koko', 'Kaulan ympärys virheellinen', 'Sallitut arvot 21 - 60 cm', 'Warning')
         waist = self.waistSB.value()
         hips = self.hipsSB.value()
 
@@ -195,6 +250,9 @@ class MainWindow(QW.QMainWindow):   # Luokka alkaa aina isolla(MainWindow) ja ko
             self.waistSB.setValue(30)
             self.hipsSB.setValue(50)
             self.savePB.setEnabled(False)
+
+    def restoreDefaults(self):
+        
 
 if __name__ == "__main__":
     # Create the application
