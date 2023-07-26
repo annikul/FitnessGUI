@@ -428,7 +428,7 @@
      <x>0</x>
      <y>0</y>
      <width>818</width>
-     <height>21</height>
+     <height>42</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuTiedosto">
@@ -462,8 +462,15 @@
     </property>
     <addaction name="actionPalauta_oletukset"/>
    </widget>
+   <widget class="QMenu" name="menuOhjeet">
+    <property name="title">
+     <string>Ohjeet</string>
+    </property>
+    <addaction name="actionOhje"/>
+   </widget>
    <addaction name="menuTiedosto"/>
    <addaction name="menuMuokkaa"/>
+   <addaction name="menuOhjeet"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionTulosta">
@@ -559,6 +566,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+D</string>
+   </property>
+  </action>
+  <action name="actionOhje">
+   <property name="text">
+    <string>Ohje</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+H</string>
    </property>
   </action>
  </widget>

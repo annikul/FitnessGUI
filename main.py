@@ -11,6 +11,7 @@ from PyQt6.uic.load_ui import loadUi # Reads the UI file
 import kuntoilija # Home brew module for athlete
 import timetools # DIY module for date and time calculations
 import athleteFile # Home made module for processing data files
+import ohje
 # TODO: Import some library able to plot trends and make it as widgets in the UI
 
 # Class for the main window
@@ -65,6 +66,8 @@ class MainWindow(QW.QMainWindow):   # Luokka alkaa aina isolla(MainWindow) ja ko
         self.testPB = self.findChild(QW.QPushButton, 'testiUiPushButton')
         self.testPB.clicked.connect(self.insertTestValues)
 
+
+        # A push button for saving user data
         # self.savePB = self.savePushButton # Tällä toimii kanssa. Alupuolella vaihtoehto
         self.savePB = self.findChild(QW.QPushButton, 'savePushButton') # findChild tekee että osaa ehdottaa joitakin metodeja/ominaisuuksia
         self.savePB.clicked.connect(self.saveData) 
@@ -80,6 +83,11 @@ class MainWindow(QW.QMainWindow):   # Luokka alkaa aina isolla(MainWindow) ja ko
             data = (1, 'Error', str(e), self.dataList)  # Palauttaa virhekoodin, virheselitys, yksityiskohtaisen virhekuvauksen ja datan.
         # Joka kerta kun softa käynnistetään uudestaan. Vanhojen mittojen perään tulee aina uudet mitat
     
+        # MENU ACTIONS # Valikko toimintoja rakennetaan
+        self.actionPalauta_oletukset.triggered.connect(self.restoreDefaults) # Tapahtuma triggered ottaa yhteyttä metodiin/slottiin. Tässä palauttaa oletusatvot
+        self.actionOhje.triggered.connect(self.openHelpDialog)
+
+        # Read previous athlete_data from disk
 
         # Define slots ie methods
 
@@ -241,17 +249,23 @@ class MainWindow(QW.QMainWindow):   # Luokka alkaa aina isolla(MainWindow) ja ko
             self.alert(status[1], status[2]) # Jos status on 1 tai 2 tulee error koodi
         else: 
             # Set all inputs to their default values
-            self.nameLE.clear() # Kun käyttäjä on tallentanut tiedot. Palaa kaikki kohdat alkupisteeseen
-            zeroDate = QtCore.QDate(1900, 1, 1)
-            self.birthDateE.setDate(zeroDate)
-            self.heightSB.setValue(100)
-            self.weightSB.setValue(20)
-            self.neckSB.setValue(10)
-            self.waistSB.setValue(30)
-            self.hipsSB.setValue(50)
-            self.savePB.setEnabled(False)
+            self.restoreDefaults # Kutsuu def joka palauttaa oletusasetukset
 
-    def restoreDefaults(self):
+    def restoreDefaults(self):  # Palauttaa oletusasetukset
+        # Set all inputs to their default values
+        self.nameLE.clear() # Kun käyttäjä on tallentanut tiedot. Palaa kaikki kohdat alkupisteeseen
+        zeroDate = QtCore.QDate(1900, 1, 1)
+        self.birthDateE.setDate(zeroDate)
+        self.heightSB.setValue(100)
+        self.weightSB.setValue(20)
+        self.neckSB.setValue(10)
+        self.waistSB.setValue(30)
+        self.hipsSB.setValue(50)
+        self.savePB.setEnabled(False)
+
+    def openHelpDialog(self):       # Tekee dialogi ikkunan 
+        openHelp = ohje.OpenHelp()  # Tekee dialogi ikkunan 
+        openHelp.exec()       # Käynnistää dialogi ikkunan
         
 
 if __name__ == "__main__":
